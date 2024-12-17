@@ -137,3 +137,22 @@ secondaryColorInput.addEventListener('input', updateColors);
 
 // Load saved colors on page load
 loadSavedColors();
+
+// Add these constants at the top with your other constants
+const resetColorsButton = document.getElementById('reset-colors');
+const DEFAULT_PRIMARY_COLOR = '#8A2BE2';
+const DEFAULT_SECONDARY_COLOR = '#9400D3';
+
+// Add reset functionality
+resetColorsButton.addEventListener('click', () => {
+    // Reset to default colors
+    primaryColorInput.value = DEFAULT_PRIMARY_COLOR;
+    secondaryColorInput.value = DEFAULT_SECONDARY_COLOR;
+    
+    // Update the colors
+    updateColors();
+    
+    // Optional: Add a small animation or feedback
+    resetColorsButton.classList.add('clicked');
+    setTimeout(() => resetColorsButton.classList.remove('clicked'), 200);
+});
