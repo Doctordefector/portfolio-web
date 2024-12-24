@@ -1,6 +1,8 @@
 :root {
-    --primary-color: #8A2BE2;
-    --secondary-color: #9400D3;
+    --primary-color: #950B3B;
+    --secondary-color: #4B50F1;
+    --highlight-bg-color: rgba(138, 43, 226, 0.2);
+    --highlight-text-bg: rgba(148, 0, 211, 0.2);
     --bg-gradient: linear-gradient(135deg, #2A1B3D 0%, #44107A 100%);
     --gradient-1: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     --gradient-2: linear-gradient(45deg, 
@@ -87,6 +89,7 @@ body {
     padding: 0 10%;
     position: relative;
     color: white;
+    transition: background 0.3s ease;
 }
 
 .hero::before {
@@ -96,7 +99,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at center, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+    background: rgba(0, 0, 0, 0.2);
     pointer-events: none;
 }
 
@@ -119,9 +122,32 @@ body {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.highlight {
-    color: var(--primary-color);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+.highlight,
+.highlight-text {
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+    padding: 0;
+    border-radius: 0;
+}
+
+.hero .highlight {
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    background-clip: initial;
+    background: none;
+    color: white;
+    text-shadow: 
+        1px 1px 0 var(--primary-color),
+        2px 2px 0 var(--secondary-color),
+        0 0 5px rgba(255, 255, 255, 0.3);
+    font-weight: 700;
+    letter-spacing: 1px;
+    position: relative;
+    display: inline-block;
+    transform: translateY(-1px);
 }
 
 .cta-button {
@@ -598,6 +624,9 @@ function adjustAlpha(color, alpha) {
 .about-text .highlight-text {
     color: var(--primary-color);
     font-weight: 500;
+    background-color: var(--highlight-bg-color) !important;
+    padding: 0 4px;
+    border-radius: 3px;
 }
 
 .about-text .ps-note {
@@ -634,4 +663,13 @@ function adjustAlpha(color, alpha) {
 
 .reset-button i {
     font-size: 0.9rem;
+} 
+
+/* Keep the about section highlight as gradient */
+.highlight-text {
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
 } 

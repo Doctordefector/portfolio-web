@@ -84,26 +84,28 @@ document.addEventListener('click', (e) => {
 });
 
 // Update colors and save to localStorage
-function updateColors() {
-    const primaryColor = primaryColorInput.value;
-    const secondaryColor = secondaryColorInput.value;
-    
-    document.documentElement.style.setProperty('--primary-color', primaryColor);
-    document.documentElement.style.setProperty('--secondary-color', secondaryColor);
+function updateColors(primary, secondary) {
+    // Set the main colors
+    document.documentElement.style.setProperty('--primary-color', primary);
+    document.documentElement.style.setProperty('--secondary-color', secondary);
     
     // Update gradients
-    const gradient1 = `linear-gradient(135deg, ${primaryColor} 0%, ${secondaryColor} 100%)`;
-    const gradient2 = `linear-gradient(45deg, ${adjustAlpha(primaryColor, 0.1)} 0%, ${adjustAlpha(secondaryColor, 0.1)} 100%)`;
+    const gradient1 = `linear-gradient(135deg, ${primary} 0%, ${secondary} 100%)`;
+    const gradient2 = `linear-gradient(45deg, ${adjustAlpha(primary, 0.1)} 0%, ${adjustAlpha(secondary, 0.1)} 100%)`;
+    
+    // Add this line to update the hero background gradient
+    const bgGradient = `linear-gradient(135deg, ${adjustAlpha(primary, 0.8)} 0%, ${adjustAlpha(secondary, 0.8)} 100%)`;
     
     document.documentElement.style.setProperty('--gradient-1', gradient1);
     document.documentElement.style.setProperty('--gradient-2', gradient2);
+    document.documentElement.style.setProperty('--bg-gradient', bgGradient);
     
     // Save to localStorage
-    localStorage.setItem('primaryColor', primaryColor);
-    localStorage.setItem('secondaryColor', secondaryColor);
+    localStorage.setItem('primaryColor', primary);
+    localStorage.setItem('secondaryColor', secondary);
 }
 
-// Helper function to adjust color opacity
+// Update the adjustAlpha function to return rgba
 function adjustAlpha(color, alpha) {
     const r = parseInt(color.substr(1,2), 16);
     const g = parseInt(color.substr(3,2), 16);
@@ -127,21 +129,26 @@ function loadSavedColors() {
     }
     
     if (savedPrimary && savedSecondary) {
-        updateColors();
+        updateColors(savedPrimary, savedSecondary);
     }
 }
 
 // Event listeners for color inputs
-primaryColorInput.addEventListener('input', updateColors);
-secondaryColorInput.addEventListener('input', updateColors);
+primaryColorInput.addEventListener('input', (e) => {
+    updateColors(e.target.value, document.getElementById('secondary-color').value);
+});
+
+secondaryColorInput.addEventListener('input', (e) => {
+    updateColors(document.getElementById('primary-color').value, e.target.value);
+});
 
 // Load saved colors on page load
 loadSavedColors();
 
 // Add these constants at the top with your other constants
 const resetColorsButton = document.getElementById('reset-colors');
-const DEFAULT_PRIMARY_COLOR = '#8A2BE2';
-const DEFAULT_SECONDARY_COLOR = '#9400D3';
+const DEFAULT_PRIMARY_COLOR = '#950B3B';
+const DEFAULT_SECONDARY_COLOR = '#4B50F1';
 
 // Add reset functionality
 resetColorsButton.addEventListener('click', () => {
@@ -150,7 +157,7 @@ resetColorsButton.addEventListener('click', () => {
     secondaryColorInput.value = DEFAULT_SECONDARY_COLOR;
     
     // Update the colors
-    updateColors();
+    updateColors(DEFAULT_PRIMARY_COLOR, DEFAULT_SECONDARY_COLOR);
     
     // Optional: Add a small animation or feedback
     resetColorsButton.classList.add('clicked');
